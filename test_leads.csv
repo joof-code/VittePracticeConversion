@@ -1,0 +1,6 @@
+CustomerID,Age,Gender,Income,CampaignChannel,CampaignType,AdSpend,ClickThroughRate,ConversionRate,WebsiteVisits,PagesPerVisit,TimeOnSite,SocialShares,EmailOpens,EmailClicks,PreviousPurchases,LoyaltyPoints
+TST-001,30,Male,80000,Social Media,Conversion,7000,0.23,0.15,35,7.2,11.5,18,14,6,5,3200
+TST-002,45,Female,60000,Email,Retention,3000,0.10,0.06,15,4.0,6.0,5,8,2,2,1500
+TST-003,50,Female,50000,PPC,Awareness,1500,0.05,0.03,8,3.0,4.5,2,3,1,1,800
+TST-004,28,Male,95000,SEO,Conversion,8000,0.25,0.18,40,8.5,13.0,25,16,7,6,4000
+TST-005,38,Female,40000,Referral,Consideration,1200,0.08,0.05,10,3.5,5.0,3,4,1,0,500
