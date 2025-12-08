@@ -1,0 +1,254 @@
+{% extends "base.html" %}
+
+{% block title %}Клиент #{{ lead.id }} — Детальная карточка{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3 mb-2">Карточка клиента</h1>
+        <p class="text-muted mb-0">
+            Здесь собрана детальная информация по выбранному клиенту: основные характеристики,
+            параметры кампании, поведение на сайте и результирующие оценки системы машинного обучения.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <!-- Общие данные -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">1. Общие сведения</h5>
+
+                <p class="mb-1">
+                    <span class="fw-semibold">Внутренний ID в системе:</span>
+                    {{ lead.id }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Идентификатор клиента:</span>
+                    {{ lead.customer_id or "не указан" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Дата создания записи:</span>
+                    {{ lead.created_at.strftime("%d.%m.%Y %H:%M") if lead.created_at else "—" }}
+                </p>
+
+                <hr>
+
+                <p class="mb-1">
+                    <span class="fw-semibold">Возраст:</span>
+                    {{ lead.age or "не указан" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Пол:</span>
+                    {% if lead.gender == "Male" %}
+                        Мужской
+                    {% elif lead.gender == "Female" %}
+                        Женский
+                    {% else %}
+                        не указан
+                    {% endif %}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Доход:</span>
+                    {% if lead.income is not none %}
+                        {{ "%.0f"|format(lead.income) }} ₽
+                    {% else %}
+                        не указан
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кампания и поведение -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100 mb-3">
+            <div class="card-body">
+                <h5 class="card-title">2. Маркетинговая кампания</h5>
+
+                <p class="mb-1">
+                    <span class="fw-semibold">Канал кампании:</span>
+                    {{ lead.campaign_channel or "не указан" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Тип кампании:</span>
+                    {{ lead.campaign_type or "не указан" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Бюджет кампании для клиента:</span>
+                    {% if lead.ad_spend is not none %}
+                        {{ "%.0f"|format(lead.ad_spend) }} ₽
+                    {% else %}
+                        не указан
+                    {% endif %}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">CTR (Click-Through Rate):</span>
+                    {% if lead.click_through_rate is not none %}
+                        {{ "%.3f"|format(lead.click_through_rate) }}
+                    {% else %}
+                        не указан
+                    {% endif %}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Историческая конверсия:</span>
+                    {% if lead.conversion_rate is not none %}
+                        {{ "%.3f"|format(lead.conversion_rate) }}
+                    {% else %}
+                        не указана
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">3. Поведение на сайте и активность</h5>
+
+                <p class="mb-1">
+                    <span class="fw-semibold">Визиты на сайт:</span>
+                    {{ lead.website_visits if lead.website_visits is not none else "не указано" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Страниц за визит:</span>
+                    {% if lead.pages_per_visit is not none %}
+                        {{ "%.1f"|format(lead.pages_per_visit) }}
+                    {% else %}
+                        не указано
+                    {% endif %}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Время на сайте (минут):</span>
+                    {% if lead.time_on_site is not none %}
+                        {{ "%.1f"|format(lead.time_on_site) }}
+                    {% else %}
+                        не указано
+                    {% endif %}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Поделился в соцсетях:</span>
+                    {{ lead.social_shares if lead.social_shares is not none else "не указано" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Открытия писем:</span>
+                    {{ lead.email_opens if lead.email_opens is not none else "не указано" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Кликов по письмам:</span>
+                    {{ lead.email_clicks if lead.email_clicks is not none else "не указано" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Предыдущие покупки:</span>
+                    {{ lead.previous_purchases if lead.previous_purchases is not none else "не указано" }}
+                </p>
+                <p class="mb-1">
+                    <span class="fw-semibold">Баллы лояльности:</span>
+                    {{ lead.loyalty_points if lead.loyalty_points is not none else "не указано" }}
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ML-результаты -->
+    <div class="col-lg-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">4. Оценка системой машинного обучения</h5>
+
+                <p class="mb-2">
+                    <span class="fw-semibold">Скор модели (rf_score):</span>
+                    {% if lead.rf_score is not none %}
+                        {{ "%.3f"|format(lead.rf_score) }}
+                    {% else %}
+                        не рассчитан
+                    {% endif %}
+                </p>
+
+                <p class="mb-2">
+                    <span class="fw-semibold">Прогноз конверсии:</span>
+                    {% if lead.predicted_conversion == 1 %}
+                        <span class="badge bg-success">Конверсия</span>
+                        <span class="ms-1 text-muted small">
+                            модель ожидает, что клиент совершит целевое действие
+                        </span>
+                    {% elif lead.predicted_conversion == 0 %}
+                        <span class="badge bg-secondary">Нет конверсии</span>
+                        <span class="ms-1 text-muted small">
+                            модель оценивает вероятность конверсии как недостаточно высокую
+                        </span>
+                    {% else %}
+                        <span class="text-muted">не рассчитано</span>
+                    {% endif %}
+                </p>
+
+                <p class="mb-2">
+                    <span class="fw-semibold">Приоритетный сегмент:</span>
+                    {% if lead.priority_segment == 'High' %}
+                        <span class="badge bg-success">High</span>
+                        <span class="ms-1 text-muted small">высокий приоритет</span>
+                    {% elif lead.priority_segment == 'Medium' %}
+                        <span class="badge bg-warning text-dark">Medium</span>
+                        <span class="ms-1 text-muted small">средний приоритет</span>
+                    {% elif lead.priority_segment == 'Low' %}
+                        <span class="badge bg-secondary">Low</span>
+                        <span class="ms-1 text-muted small">низкий приоритет</span>
+                    {% else %}
+                        <span class="text-muted">не присвоен</span>
+                    {% endif %}
+                </p>
+
+                <p class="mb-2">
+                    <span class="fw-semibold">Дециль по вероятности конверсии:</span>
+                    {% if lead.rf_decile is not none %}
+                        {{ lead.rf_decile }} из 10
+                        <span class="text-muted small d-block">
+                            1-й дециль — наиболее «горячие» клиенты, 10-й — наименее перспективные.
+                        </span>
+                    {% else %}
+                        <span class="text-muted">не указан</span>
+                    {% endif %}
+                </p>
+
+                <p class="mb-3">
+                    <span class="fw-semibold">Поведенческий кластер (KMeans):</span>
+                    {% if lead.cluster_kmeans is not none %}
+                        <span class="badge bg-info text-dark">
+                            Кластер {{ lead.cluster_kmeans }}
+                        </span>
+                        <span class="text-muted small d-block mt-1">
+                            Кластер формируется по совокупности признаков вовлечённости и покупательской активности.
+                            Интерпретация кластера приводится в аналитическом отчёте к преддипломной практике.
+                        </span>
+                    {% else %}
+                        <span class="text-muted">не определён</span>
+                    {% endif %}
+                </p>
+
+                <hr>
+
+                <p class="small text-muted mb-0">
+                    Данная оценка получена на основе предварительно обученной модели RandomForest
+                    и не является абсолютным прогнозом будущего поведения клиента. Модель служит инструментом
+                    поддержки принятия решений и должна использоваться совместно с экспертизой маркетолога.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-12 d-flex justify-content-between">
+        <a href="{{ url_for('runs_list') }}" class="btn btn-outline-secondary btn-sm">
+            ← К списку запусков
+        </a>
+        {% if lead.batch_id %}
+            <a href="{{ url_for('run_detail', run_id=lead.batch_id) }}" class="btn btn-outline-primary btn-sm">
+                К запуску #{{ lead.batch_id }}
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}История пакетных запусков — Система повышения конверсии{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3 mb-2">История пакетных запусков</h1>
+        <p class="text-muted mb-0">
+            В этом разделе отображаются все пакетные расчёты, выполненные на основе CSV-файлов с клиентами.
+            Для каждого запуска можно открыть детальный список клиентов и скачать результаты в формате CSV.
+        </p>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-12 d-flex justify-content-between align-items-center">
+        <div>
+            <a href="{{ url_for('upload_batch') }}" class="btn btn-primary btn-sm">
+                Новый пакетный запуск
+            </a>
+        </div>
+        <div class="text-muted small">
+            Всего запусков: <strong>{{ runs|length }}</strong>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                {% if runs and runs|length > 0 %}
+                    <div class="table-responsive small">
+                        <table class="table table-striped table-hover align-middle mb-0">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название запуска</th>
+                                <th>Дата и время</th>
+                                <th class="text-end">Клиенты</th>
+                                <th class="text-end">Средний скор</th>
+                                <th class="text-end">Доля конверсий</th>
+                                <th class="text-end">Порог</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for batch in runs %}
+                                <tr>
+                                    <td class="text-muted">
+                                        #{{ batch.id }}
+                                    </td>
+                                    <td>
+                                        <div class="fw-semibold">
+                                            {{ batch.name }}
+                                        </div>
+                                        {% if batch.comment %}
+                                            <div class="text-muted">
+                                                <span class="small">
+                                                    {{ batch.comment[:80] }}{% if batch.comment|length > 80 %}…{% endif %}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ batch.created_at.strftime("%d.%m.%Y %H:%M") if batch.created_at else "—" }}
+                                    </td>
+                                    <td class="text-end">
+                                        {{ batch.n_clients or 0 }}
+                                    </td>
+                                    <td class="text-end">
+                                        {{ "%.3f"|format(batch.avg_score or 0) }}
+                                    </td>
+                                    <td class="text-end">
+                                        {{ "%.1f"|format((batch.avg_predicted_conversion or 0) * 100) }}%
+                                    </td>
+                                    <td class="text-end">
+                                        {{ "%.3f"|format(batch.threshold_used or ml_service.default_threshold) }}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{{ url_for('run_detail', run_id=batch.id) }}"
+                                           class="btn btn-sm btn-outline-primary me-1">
+                                            Открыть
+                                        </a>
+                                        <a href="{{ url_for('download_run', run_id=batch.id) }}"
+                                           class="btn btn-sm btn-outline-success">
+                                            CSV
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted mb-0">
+                        На данный момент в системе нет ни одного пакетного запуска.
+                        Вы можете создать первый запуск на странице
+                        <a href="{{ url_for('upload_batch') }}">«Пакетная оценка (CSV)»</a>.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

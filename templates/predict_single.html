@@ -1,0 +1,438 @@
+{% extends "base.html" %}
+
+{% block title %}Оценить клиента — Система повышения конверсии{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3 mb-3">Оценка вероятности конверсии одного клиента</h1>
+        <p class="text-muted">
+            Заполните форму ниже, указав основные характеристики потенциального клиента и параметры маркетинговой
+            активности. Система рассчитает вероятность конверсии, приоритетный сегмент и поведенческий кластер,
+            а результат будет сохранён в базу данных.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Форма ввода данных о клиенте</h5>
+
+                <form method="post" novalidate>
+                    <!-- Блок 1. Общие данные о клиенте -->
+                    <h6 class="fw-semibold mt-2 mb-2">1. Общие данные</h6>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="CustomerID" class="form-label">
+                                Идентификатор клиента
+                            </label>
+                            <input type="text"
+                                   class="form-control"
+                                   id="CustomerID"
+                                   name="CustomerID"
+                                   placeholder="Например: CLNT-001"
+                                   value="{{ request.form.get('CustomerID', '') }}">
+                            <div class="form-text">
+                                Произвольный код или номер клиента (можно оставить пустым, тогда идентификатор
+                                будет сформирован автоматически для отчётности).
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="Age" class="form-label">Возраст, лет</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="Age"
+                                   name="Age"
+                                   min="18"
+                                   max="100"
+                                   placeholder="например, 35"
+                                   value="{{ request.form.get('Age', '') }}">
+                            <div class="form-text">
+                                Возраст клиента в полных годах.
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="Gender" class="form-label">Пол</label>
+                            <select class="form-select" id="Gender" name="Gender">
+                                <option value="">Не указан</option>
+                                {% for value, label in gender_options %}
+                                    <option value="{{ value }}"
+                                      {% if request.form.get('Gender') == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">
+                                Используется в качестве дополнительного сегментационного признака.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="Income" class="form-label">Доход клиента</label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="Income"
+                                   name="Income"
+                                   min="0"
+                                   step="1000"
+                                   placeholder="например, 80000"
+                                   value="{{ request.form.get('Income', '') }}">
+                            <div class="form-text">
+                                Оценка среднемесячного дохода клиента (можно задавать приблизительно).
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Блок 2. Параметры кампании -->
+                    <h6 class="fw-semibold mt-2 mb-2">2. Маркетинговая кампания</h6>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="CampaignChannel" class="form-label">
+                                Канал кампании
+                            </label>
+                            <select class="form-select" id="CampaignChannel" name="CampaignChannel">
+                                <option value="">Выберите канал</option>
+                                {% for value, label in channel_options %}
+                                    <option value="{{ value }}"
+                                      {% if request.form.get('CampaignChannel') == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">
+                                Основной канал коммуникации с клиентом (соцсети, email, контекстная реклама и т.д.).
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="CampaignType" class="form-label">
+                                Тип кампании
+                            </label>
+                            <select class="form-select" id="CampaignType" name="CampaignType">
+                                <option value="">Выберите тип</option>
+                                {% for value, label in campaign_type_options %}
+                                    <option value="{{ value }}"
+                                      {% if request.form.get('CampaignType') == value %}selected{% endif %}>
+                                        {{ label }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                            <div class="form-text">
+                                Логическая цель коммуникации: привлечение, формирование интереса, конверсия или удержание.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="AdSpend" class="form-label">
+                                Бюджет кампании для клиента, руб.
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="AdSpend"
+                                   name="AdSpend"
+                                   min="0"
+                                   step="100"
+                                   placeholder="например, 5000"
+                                   value="{{ request.form.get('AdSpend', '') }}">
+                            <div class="form-text">
+                                Прогнозируемый или фактический рекламный бюджет, приходящийся на данного клиента.
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="ClickThroughRate" class="form-label">
+                                CTR (Click-Through Rate)
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="ClickThroughRate"
+                                   name="ClickThroughRate"
+                                   step="0.001"
+                                   min="0"
+                                   max="1"
+                                   placeholder="0.15"
+                                   value="{{ request.form.get('ClickThroughRate', '') }}">
+                            <div class="form-text">
+                                Доля кликов по показам (от 0 до 1). Например, 0.15 означает 15% пользователей кликнули.
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="ConversionRate" class="form-label">
+                                Историческая конверсия
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="ConversionRate"
+                                   name="ConversionRate"
+                                   step="0.001"
+                                   min="0"
+                                   max="1"
+                                   placeholder="0.10"
+                                   value="{{ request.form.get('ConversionRate', '') }}">
+                            <div class="form-text">
+                                Доля целевых действий (покупка, заявка) от числа контактов с клиентом (от 0 до 1).
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Блок 3. Поведение на сайте -->
+                    <h6 class="fw-semibold mt-2 mb-2">3. Поведение клиента на сайте</h6>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label for="WebsiteVisits" class="form-label">
+                                Визиты на сайт
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="WebsiteVisits"
+                                   name="WebsiteVisits"
+                                   min="0"
+                                   step="1"
+                                   placeholder="например, 10"
+                                   value="{{ request.form.get('WebsiteVisits', '') }}">
+                            <div class="form-text">
+                                Сколько раз клиент посещал сайт за выбранный период.
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="PagesPerVisit" class="form-label">
+                                Страниц за визит
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="PagesPerVisit"
+                                   name="PagesPerVisit"
+                                   min="0"
+                                   step="0.1"
+                                   placeholder="например, 5.2"
+                                   value="{{ request.form.get('PagesPerVisit', '') }}">
+                            <div class="form-text">
+                                Среднее количество просмотренных страниц за одно посещение.
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="TimeOnSite" class="form-label">
+                                Время на сайте, минут
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="TimeOnSite"
+                                   name="TimeOnSite"
+                                   min="0"
+                                   step="0.1"
+                                   placeholder="например, 7.5"
+                                   value="{{ request.form.get('TimeOnSite', '') }}">
+                            <div class="form-text">
+                                Суммарное время, которое клиент проводит на сайте за период анализа.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="SocialShares" class="form-label">
+                                Поделился в соцсетях (раз)
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="SocialShares"
+                                   name="SocialShares"
+                                   min="0"
+                                   step="1"
+                                   placeholder="например, 3"
+                                   value="{{ request.form.get('SocialShares', '') }}">
+                            <div class="form-text">
+                                Признак «социального доказательства» — сколько раз клиент делился контентом.
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <!-- Блок 4. Email-активность и история покупок -->
+                    <h6 class="fw-semibold mt-2 mb-2">4. Email-активность и лояльность</h6>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label for="EmailOpens" class="form-label">
+                                Открытия писем
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="EmailOpens"
+                                   name="EmailOpens"
+                                   min="0"
+                                   step="1"
+                                   placeholder="например, 5"
+                                   value="{{ request.form.get('EmailOpens', '') }}">
+                            <div class="form-text">
+                                Сколько раз клиент открывал рекламные или информационные письма.
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="EmailClicks" class="form-label">
+                                Кликов по письмам
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="EmailClicks"
+                                   name="EmailClicks"
+                                   min="0"
+                                   step="1"
+                                   placeholder="например, 2"
+                                   value="{{ request.form.get('EmailClicks', '') }}">
+                            <div class="form-text">
+                                Сколько раз клиент переходил по ссылкам из email-рассылки.
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="PreviousPurchases" class="form-label">
+                                Предыдущие покупки, шт.
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="PreviousPurchases"
+                                   name="PreviousPurchases"
+                                   min="0"
+                                   step="1"
+                                   placeholder="например, 4"
+                                   value="{{ request.form.get('PreviousPurchases', '') }}">
+                            <div class="form-text">
+                                Количество совершённых клиентом покупок в прошлом.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-4">
+                            <label for="LoyaltyPoints" class="form-label">
+                                Баллы лояльности
+                            </label>
+                            <input type="number"
+                                   class="form-control"
+                                   id="LoyaltyPoints"
+                                   name="LoyaltyPoints"
+                                   min="0"
+                                   step="1"
+                                   placeholder="например, 2500"
+                                   value="{{ request.form.get('LoyaltyPoints', '') }}">
+                            <div class="form-text">
+                                Текущее количество бонусных баллов или иной интегральной оценки лояльности.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">
+                            Рассчитать вероятность конверсии
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Блок результатов -->
+    <div class="col-lg-5">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Результат оценки</h5>
+
+                {% if result %}
+                    <p class="lead mb-1">
+                        {{ result.probability_text }}
+                    </p>
+
+                    <p class="mb-2">
+                        Вероятность конверсии рассчитана моделями машинного обучения на основе данных
+                        о кампании, поведении клиента и его истории взаимодействий.
+                    </p>
+
+                    <p class="mb-2">
+                        <span class="fw-semibold">Сегмент по приоритету:</span>
+                        {% if result.priority_segment == 'High' %}
+                            <span class="badge bg-success">High</span>
+                            <span class="ms-1 text-muted small">высокий приоритет</span>
+                        {% elif result.priority_segment == 'Medium' %}
+                            <span class="badge bg-warning text-dark">Medium</span>
+                            <span class="ms-1 text-muted small">средний приоритет</span>
+                        {% elif result.priority_segment == 'Low' %}
+                            <span class="badge bg-secondary">Low</span>
+                            <span class="ms-1 text-muted small">низкий приоритет</span>
+                        {% else %}
+                            {{ result.priority_segment }}
+                        {% endif %}
+                        <br>
+                        <span class="text-muted small">
+                            {{ result.priority_text }}
+                        </span>
+                    </p>
+
+                    <p class="mb-2">
+                        <span class="fw-semibold">Дециль по конверсии:</span>
+                        {{ result.rf_decile }} из 10<br>
+                        <span class="text-muted small">
+                            1-й дециль — наиболее «горячие» клиенты, 10-й — наименее перспективные.
+                        </span>
+                    </p>
+
+                    <p class="mb-2">
+                        <span class="fw-semibold">Поведенческий кластер (KMeans):</span>
+                        <span class="badge bg-info text-dark">
+                            Кластер {{ result.cluster_kmeans }}
+                        </span><br>
+                        <span class="text-muted small">
+                            {{ result.cluster_text }}
+                        </span>
+                    </p>
+
+                    <hr>
+
+                    <p class="small text-muted mb-2">
+                        Для более детального анализа вы можете загрузить аналогичных клиентов в виде CSV-файла
+                        через раздел <strong>«Пакетная оценка (CSV)»</strong> и сравнить распределение
+                        по сегментам и кластерам.
+                    </p>
+
+                    {% if lead_id %}
+                        <p class="small mb-0">
+                            Запись о клиенте сохранена в базе данных.
+                            <a href="{{ url_for('client_detail', lead_id=lead_id) }}">
+                                Открыть карточку клиента
+                            </a>
+                        </p>
+                    {% endif %}
+                {% else %}
+                    <p class="text-muted">
+                        Результат будет показан после заполнения формы и отправки данных.
+                        Минимальный набор полей: возраст, пол, доход, параметры кампании и базовое
+                        поведение на сайте. Остальные признаки помогут уточнить прогноз.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Пакетная оценка (CSV) — Система повышения конверсии{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="h3 mb-3">Пакетная оценка клиентов по CSV-файлу</h1>
+        <p class="text-muted">
+            На этой странице вы можете загрузить CSV-файл с потенциальными клиентами.
+            Система рассчитает для каждого клиента вероятность конверсии, присвоит приоритетный сегмент
+            и поведенческий кластер, а затем сохранит результаты в базу данных.
+        </p>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-5">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Шаг 1. Загрузите CSV-файл</h5>
+
+                <form method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="batchName" class="form-label">
+                            Название запуска
+                        </label>
+                        <input type="text"
+                               class="form-control"
+                               id="batchName"
+                               name="name"
+                               placeholder="Например: Кампания по удержанию клиентов за март">
+                        <div class="form-text">
+                            Это название будет отображаться в разделе «История запусков».
+                            Можно оставить поле пустым — тогда имя будет сгенерировано автоматически.
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="csvFile" class="form-label">
+                            CSV-файл с клиентами
+                        </label>
+                        <input class="form-control"
+                               type="file"
+                               id="csvFile"
+                               name="file"
+                               accept=".csv">
+                        <div class="form-text">
+                            Файл должен быть в формате <strong>CSV</strong> с разделителем «запятая».
+                            Кодировка — желательно <strong>UTF-8</strong>.
+                            Структура столбцов может повторять учебный датасет с Kaggle.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        Запустить расчёт
+                    </button>
+                </form>
+
+                <hr class="my-4">
+
+                <h6 class="fw-semibold">Ожидаемые столбцы (минимальный набор)</h6>
+                <ul class="small mb-2">
+                    <li><code>CustomerID</code> — идентификатор клиента (строка или число)</li>
+                    <li><code>Age</code> — возраст (лет)</li>
+                    <li><code>Gender</code> — пол (<code>Male</code> / <code>Female</code>)</li>
+                    <li><code>Income</code> — доход клиента</li>
+                    <li><code>CampaignChannel</code> — канал кампании (Social Media, Email, PPC, SEO, Referral)</li>
+                    <li><code>CampaignType</code> — тип кампании (Awareness, Consideration, Conversion, Retention)</li>
+                    <li><code>AdSpend</code> — рекламный бюджет для клиента</li>
+                    <li><code>ClickThroughRate</code> — CTR (доля кликов по показам)</li>
+                    <li><code>ConversionRate</code> — историческая конверсия</li>
+                    <li><code>WebsiteVisits</code> — количество визитов на сайт</li>
+                    <li><code>PagesPerVisit</code>, <code>TimeOnSite</code>, <code>SocialShares</code></li>
+                    <li><code>EmailOpens</code>, <code>EmailClicks</code></li>
+                    <li><code>PreviousPurchases</code>, <code>LoyaltyPoints</code></li>
+                </ul>
+                <p class="small text-muted mb-0">
+                    Если в файле присутствуют дополнительные столбцы, они будут аккуратно игнорироваться.
+                    При отсутствии какого-либо признака система подставит разумные значения по умолчанию
+                    (например, нули), но качество прогноза может немного снизиться.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-7">
+        <div class="card shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="card-title">Шаг 2. Результат последнего пакетного запуска</h5>
+
+                {% if batch %}
+                    <p class="mb-1">
+                        <span class="fw-semibold">Название запуска:</span>
+                        {{ batch.name }}
+                    </p>
+                    <p class="mb-1 text-muted small">
+                        Дата и время: {{ batch.created_at.strftime("%d.%m.%Y %H:%M") }}
+                    </p>
+                    <p class="mb-1">
+                        Клиентов в наборе:
+                        <strong>{{ batch.n_clients }}</strong><br>
+                        Средний скор модели:
+                        <strong>{{ "%.3f"|format(batch.avg_score or 0) }}</strong><br>
+                        Доля предсказанных конверсий:
+                        <strong>{{ "%.1f"|format((batch.avg_predicted_conversion or 0) * 100) }}%</strong><br>
+                        Порог классификации:
+                        <strong>{{ "%.3f"|format(batch.threshold_used or ml_service.default_threshold) }}</strong>
+                    </p>
+
+                    <div class="mt-2 mb-3">
+                        <a href="{{ url_for('run_detail', run_id=batch.id) }}"
+                           class="btn btn-sm btn-outline-primary me-2">
+                            Открыть запуск в истории
+                        </a>
+                        <a href="{{ url_for('download_run', run_id=batch.id) }}"
+                           class="btn btn-sm btn-outline-success">
+                            Скачать результаты (CSV)
+                        </a>
+                    </div>
+
+                    {% if preview_html %}
+                        <hr>
+                        <h6 class="fw-semibold">Первые строки результата</h6>
+                        <p class="small text-muted">
+                            Ниже приведён фрагмент таблицы с первыми строками обогащённого набора клиентов.
+                            В результирующем CSV-файле будут присутствовать дополнительные столбцы:
+                            <code>rf_score</code>, <code>predicted_conversion</code>,
+                            <code>rf_decile</code>, <code>priority_segment</code>, <code>cluster_kmeans</code>.
+                        </p>
+                        <div class="table-responsive small">
+                            {{ preview_html|safe }}
+                        </div>
+                    {% endif %}
+
+                {% else %}
+                    <p class="text-muted">
+                        Пока пакетный запуск не выполнен. После загрузки CSV-файла
+                        и успешного расчёта прогнозов здесь появится краткая сводка по набору
+                        и фрагмент результирующей таблицы.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
