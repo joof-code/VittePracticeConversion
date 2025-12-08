@@ -1,0 +1,13 @@
+{
+  "features": [
+    "EngagementScore",
+    "AdSpend",
+    "ConversionRate",
+    "WebsiteVisits",
+    "PagesPerVisit",
+    "TimeOnSite",
+    "PreviousPurchases",
+    "LoyaltyPoints"
+  ],
+  "n_clusters": 4
+}

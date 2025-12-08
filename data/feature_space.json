@@ -1,0 +1,148 @@
+{
+  "id_col": "CustomerID",
+  "target_col": "Conversion",
+  "numeric_features": [
+    "Age",
+    "Income",
+    "AdSpend",
+    "ClickThroughRate",
+    "ConversionRate",
+    "WebsiteVisits",
+    "PagesPerVisit",
+    "TimeOnSite",
+    "SocialShares",
+    "EmailOpens",
+    "EmailClicks",
+    "PreviousPurchases",
+    "LoyaltyPoints",
+    "EmailEngagementRate",
+    "SocialShareRate",
+    "CostPerVisit",
+    "CostPerEmailClick",
+    "LoyaltyPerPurchase",
+    "EngagementScore"
+  ],
+  "categorical_features": [
+    "Gender",
+    "CampaignChannel",
+    "CampaignType"
+  ],
+  "derived_features": [
+    "EmailEngagementRate",
+    "SocialShareRate",
+    "CostPerVisit",
+    "CostPerEmailClick",
+    "LoyaltyPerPurchase",
+    "EngagementScore"
+  ],
+  "constant_dropped": [
+    "AdvertisingPlatform",
+    "AdvertisingTool"
+  ],
+  "winsorization": {
+    "Age": {
+      "q_low": 18.0,
+      "q_high": 69.0,
+      "outlier_pct": 0.0
+    },
+    "Income": {
+      "q_low": 21237.98,
+      "q_high": 148424.21,
+      "outlier_pct": 2.0
+    },
+    "AdSpend": {
+      "q_low": 208.85654268817194,
+      "q_high": 9901.971843053623,
+      "outlier_pct": 2.0
+    },
+    "ClickThroughRate": {
+      "q_low": 0.012499381967099163,
+      "q_high": 0.2973847853853651,
+      "outlier_pct": 2.0
+    },
+    "ConversionRate": {
+      "q_low": 0.011871636446514077,
+      "q_high": 0.1978811836674077,
+      "outlier_pct": 2.0
+    },
+    "WebsiteVisits": {
+      "q_low": 0.0,
+      "q_high": 49.0,
+      "outlier_pct": 0.0
+    },
+    "PagesPerVisit": {
+      "q_low": 1.0924642461995622,
+      "q_high": 9.90728950223153,
+      "outlier_pct": 2.0
+    },
+    "TimeOnSite": {
+      "q_low": 0.6262352299301114,
+      "q_high": 14.864001547738358,
+      "outlier_pct": 2.0
+    },
+    "SocialShares": {
+      "q_low": 0.0,
+      "q_high": 98.0,
+      "outlier_pct": 0.9249999999999999
+    },
+    "EmailOpens": {
+      "q_low": 0.0,
+      "q_high": 19.0,
+      "outlier_pct": 0.0
+    },
+    "EmailClicks": {
+      "q_low": 0.0,
+      "q_high": 9.0,
+      "outlier_pct": 0.0
+    },
+    "PreviousPurchases": {
+      "q_low": 0.0,
+      "q_high": 9.0,
+      "outlier_pct": 0.0
+    },
+    "LoyaltyPoints": {
+      "q_low": 52.989999999999995,
+      "q_high": 4947.0,
+      "outlier_pct": 1.9875
+    },
+    "EmailEngagementRate": {
+      "q_low": 0.0,
+      "q_high": 7.0,
+      "outlier_pct": 0.75
+    },
+    "SocialShareRate": {
+      "q_low": 0.0,
+      "q_high": 47.00500000000011,
+      "outlier_pct": 1.0
+    },
+    "CostPerVisit": {
+      "q_low": 7.646427313084289,
+      "q_high": 4864.565693038709,
+      "outlier_pct": 2.0
+    },
+    "CostPerEmailClick": {
+      "q_low": 36.37215677608047,
+      "q_high": 8949.789814471931,
+      "outlier_pct": 2.0
+    },
+    "LoyaltyPerPurchase": {
+      "q_low": 9.443333333333333,
+      "q_high": 4482.040000000001,
+      "outlier_pct": 2.0
+    },
+    "EngagementScore": {
+      "q_low": 0.270836015625,
+      "q_high": 0.7360675000000002,
+      "outlier_pct": 2.0
+    }
+  },
+  "scaler": "RobustScaler",
+  "encoder": {
+    "class": "OneHotEncoder",
+    "params": {
+      "handle_unknown": "ignore",
+      "drop": "first",
+      "sparse_output": false
+    }
+  }
+}

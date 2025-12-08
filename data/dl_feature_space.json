@@ -1,0 +1,32 @@
+{
+  "input_dim": 27,
+  "feature_names": [
+    "num__Age",
+    "num__Income",
+    "num__AdSpend",
+    "num__ClickThroughRate",
+    "num__ConversionRate",
+    "num__WebsiteVisits",
+    "num__PagesPerVisit",
+    "num__TimeOnSite",
+    "num__SocialShares",
+    "num__EmailOpens",
+    "num__EmailClicks",
+    "num__PreviousPurchases",
+    "num__LoyaltyPoints",
+    "num__EmailEngagementRate",
+    "num__SocialShareRate",
+    "num__CostPerVisit",
+    "num__CostPerEmailClick",
+    "num__LoyaltyPerPurchase",
+    "num__EngagementScore",
+    "cat__Gender_Male",
+    "cat__CampaignChannel_PPC",
+    "cat__CampaignChannel_Referral",
+    "cat__CampaignChannel_SEO",
+    "cat__CampaignChannel_Social Media",
+    "cat__CampaignType_Consideration",
+    "cat__CampaignType_Conversion",
+    "cat__CampaignType_Retention"
+  ]
+}

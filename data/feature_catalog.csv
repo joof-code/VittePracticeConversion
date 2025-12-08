@@ -1,0 +1,21 @@
+﻿feature_name,dtype,n_unique,n_missing,description_ru,example_value
+CustomerID,int64,8000,0,,8000
+Age,int64,52,0,,56
+Gender,object,2,0,,Female
+Income,int64,7789,0,,136912
+CampaignChannel,object,5,0,,Social Media
+CampaignType,object,4,0,,Awareness
+AdSpend,float64,8000,0,,6497.870068417766
+ClickThroughRate,float64,8000,0,,0.043918510735383
+ConversionRate,float64,8000,0,,0.088031412072881
+WebsiteVisits,int64,50,0,,0
+PagesPerVisit,float64,8000,0,,2.399016527783845
+TimeOnSite,float64,8000,0,,7.396802580796058
+SocialShares,int64,100,0,,19
+EmailOpens,int64,20,0,,6
+EmailClicks,int64,10,0,,9
+PreviousPurchases,int64,10,0,,4
+LoyaltyPoints,int64,3983,0,,688
+AdvertisingPlatform,object,1,0,,IsConfid
+AdvertisingTool,object,1,0,,ToolConfid
+Conversion,int64,2,0,,1

@@ -1,0 +1,14 @@
+﻿feature,Gender,conversion_rate,n,CampaignChannel,CampaignType,AdvertisingPlatform,AdvertisingTool
+Gender,Male,0.8769376779500159,3161,,,,
+Gender,Female,0.8762140938210374,4839,,,,
+CampaignChannel,,0.8830715532286213,1719,Referral,,,
+CampaignChannel,,0.8827794561933535,1655,PPC,,,
+CampaignChannel,,0.8767741935483871,1550,SEO,,,
+CampaignChannel,,0.8702633269107257,1557,Email,,,
+CampaignChannel,,0.8683344305464121,1519,Social Media,,,
+CampaignType,,0.9335580163697641,2077,,Conversion,,
+CampaignType,,0.8582434514637904,1947,,Retention,,
+CampaignType,,0.8556338028169014,1988,,Consideration,,
+CampaignType,,0.8556338028169014,1988,,Awareness,,
+AdvertisingPlatform,,0.8765,8000,,,IsConfid,
+AdvertisingTool,,0.8765,8000,,,,ToolConfid
