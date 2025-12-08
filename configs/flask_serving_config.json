@@ -1,0 +1,102 @@
+{
+  "created_at": "2025-12-07T04:49:31.563624",
+  "project_name": "digital_marketing_conversion",
+  "target_column": "Conversion",
+  "id_column": "CustomerID",
+  "numeric_features": [
+    "Age",
+    "Income",
+    "AdSpend",
+    "ClickThroughRate",
+    "ConversionRate",
+    "WebsiteVisits",
+    "PagesPerVisit",
+    "TimeOnSite",
+    "SocialShares",
+    "EmailOpens",
+    "EmailClicks",
+    "PreviousPurchases",
+    "LoyaltyPoints",
+    "EmailEngagementRate",
+    "SocialShareRate",
+    "CostPerVisit",
+    "CostPerEmailClick",
+    "LoyaltyPerPurchase",
+    "EngagementScore"
+  ],
+  "categorical_features": [
+    "Gender",
+    "CampaignChannel",
+    "CampaignType"
+  ],
+  "derived_features": [
+    "EmailEngagementRate",
+    "SocialShareRate",
+    "CostPerVisit",
+    "CostPerEmailClick",
+    "LoyaltyPerPurchase",
+    "EngagementScore"
+  ],
+  "paths": {
+    "models": {
+      "random_forest_pipeline": "/content/drive/MyDrive/digital_marketing_conversion/models/rf_best_pipeline.joblib",
+      "xgboost_pipeline": "/content/drive/MyDrive/digital_marketing_conversion/models/xgb_best_pipeline.joblib",
+      "mlp_keras_model": "/content/drive/MyDrive/digital_marketing_conversion/models/mlp_conversion_model.keras",
+      "preprocess_dl": "/content/drive/MyDrive/digital_marketing_conversion/models/preprocess_dl.joblib",
+      "cluster_scaler": "/content/drive/MyDrive/digital_marketing_conversion/models/cluster_scaler.joblib",
+      "kmeans_model": "/content/drive/MyDrive/digital_marketing_conversion/models/kmeans_model.joblib"
+    },
+    "configs": {
+      "winsorization": "/content/drive/MyDrive/digital_marketing_conversion/data/winsorization_config.json",
+      "feature_space_tabular": "/content/drive/MyDrive/digital_marketing_conversion/data/feature_space.json",
+      "feature_space_dl": "/content/drive/MyDrive/digital_marketing_conversion/data/dl_feature_space.json",
+      "threshold_scenarios": "/content/drive/MyDrive/digital_marketing_conversion/reports/rf_threshold_scenarios.json",
+      "kmeans_cluster": "/content/drive/MyDrive/digital_marketing_conversion/data/kmeans_cluster_config.json"
+    },
+    "reports": {
+      "metrics_ensembles": "/content/drive/MyDrive/digital_marketing_conversion/reports/metrics_ensembles.csv",
+      "rf_decile_summary": "/content/drive/MyDrive/digital_marketing_conversion/reports/rf_decile_summary.csv",
+      "rf_priority_summary": "/content/drive/MyDrive/digital_marketing_conversion/reports/rf_priority_segment_summary.csv",
+      "kmeans_cluster_summary": "/content/drive/MyDrive/digital_marketing_conversion/reports/kmeans_cluster_summary.csv",
+      "lift_table_test": "/content/drive/MyDrive/digital_marketing_conversion/reports/rf_lift_table_test.csv",
+      "roi_scenarios_test": "/content/drive/MyDrive/digital_marketing_conversion/reports/rf_roi_test_scenarios.csv"
+    },
+    "data": {
+      "client_segmentation_deciles": "/content/drive/MyDrive/digital_marketing_conversion/data/client_segmentation_deciles.csv",
+      "client_clusters_kmeans": "/content/drive/MyDrive/digital_marketing_conversion/data/client_clusters_kmeans.csv"
+    }
+  },
+  "serving": {
+    "champion_model": "random_forest_pipeline",
+    "default_threshold": 0.44000000000000006,
+    "threshold_scenarios": {
+      "best_f1": 0.44000000000000006,
+      "high_recall": 0.48,
+      "high_precision": 0.85,
+      "default_0_5": 0.5
+    },
+    "priority_segment_column": "priority_segment",
+    "priority_levels_order": [
+      "High",
+      "Medium",
+      "Low"
+    ]
+  },
+  "champion_test_metrics": {
+    "model": "RandomForest",
+    "split": "test",
+    "threshold": 0.5,
+    "accuracy": 0.914375,
+    "f1": 0.9522814350400556,
+    "precision": 0.930565010211028,
+    "recall": 0.9750356633380884,
+    "roc_auc": 0.8134122970071616,
+    "pr_auc": 0.949778011564091,
+    "tn": 96,
+    "fp": 102,
+    "fn": 35,
+    "tp": 1367,
+    "support_neg": 198,
+    "support_pos": 1402
+  }
+}
