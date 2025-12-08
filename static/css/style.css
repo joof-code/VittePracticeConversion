@@ -1,0 +1,231 @@
+/* ====== БАЗОВЫЕ НАСТРОЙКИ ====== */
+
+body {
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: linear-gradient(135deg, #f5f7fb 0%, #eef3ff 35%, #f8f9ff 100%);
+    color: #212529;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main.container {
+    flex: 1 0 auto;
+}
+
+/* Чуть мягче заголовки */
+h1, h2, h3, h4, h5 {
+    letter-spacing: 0.02em;
+}
+
+/* ====== НАВИГАЦИЯ И ФУТЕР ====== */
+
+.navbar {
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+
+.navbar .nav-link {
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.navbar .nav-link.active {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+}
+
+.footer {
+    flex-shrink: 0;
+}
+
+/* ====== КАРТОЧКИ, ТАБЛИЦЫ, БЕЙДЖИ ====== */
+
+.card {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(0, 0, 0, 0.03);
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+}
+
+.card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: #39445a;
+}
+
+.card-body {
+    padding: 1.25rem 1.5rem;
+}
+
+.table {
+    font-size: 0.9rem;
+}
+
+.table thead th {
+    border-bottom-width: 1px;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    color: #6c757d;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    background-color: rgba(248, 249, 252, 0.8);
+}
+
+/* Подсветка строки при наведении */
+.table-hover tbody tr:hover > * {
+    background-color: #e8f0ff;
+}
+
+/* Бейджи сегментов — чуть более выразительные */
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107 !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
+}
+
+.badge.bg-info {
+    background-color: #0dcaf0 !important;
+}
+
+/* ====== ФОРМЫ ====== */
+
+form label.form-label {
+    font-weight: 500;
+    color: #253047;
+}
+
+form .form-text {
+    font-size: 0.75rem;
+    color: #6c757d;
+}
+
+.form-control,
+.form-select {
+    border-radius: 0.6rem;
+    border-color: #d0d7e2;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #4f46e5;
+    box-shadow: 0 0 0 0.2rem rgba(79, 70, 229, 0.15);
+    background-color: #fbfbff;
+}
+
+/* Лёгкое разделение блоков формы */
+form h6.fw-semibold {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+hr {
+    margin-top: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+/* ====== КНОПКИ ====== */
+
+.btn {
+    border-radius: 999px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    border-color: #4f46e5;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #4338ca, #4f46e5);
+    border-color: #4338ca;
+}
+
+.btn-outline-primary {
+    border-color: #4f46e5;
+    color: #4f46e5;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4f46e5;
+    color: #fff;
+}
+
+.btn-outline-success:hover {
+    color: #fff;
+}
+
+/* ====== FLASH-СООБЩЕНИЯ ====== */
+
+.alert {
+    border-radius: 0.75rem;
+    border-width: 0;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #d1fae5, #bbf7d0);
+    color: #065f46;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    color: #991b1b;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    color: #92400e;
+}
+
+/* ====== МЕЛОЧИ ДЛЯ УДОБСТВА ЧТЕНИЯ ====== */
+
+.display-6 {
+    font-weight: 600;
+}
+
+small,
+.text-muted.small {
+    line-height: 1.35;
+}
+
+/* Скролл области таблиц на небольших экранах */
+.table-responsive {
+    border-radius: 0.75rem;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* ====== АДАПТИВ ====== */
+
+@media (max-width: 767.98px) {
+    .navbar-brand {
+        font-size: 0.95rem;
+    }
+
+    .card-body {
+        padding: 1rem 1.1rem;
+    }
+
+    main.container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
