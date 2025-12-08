@@ -1,0 +1,6 @@
+main_conversion_dataset:
+  description: Predict Conversion in Digital Marketing Dataset (основной датасет для
+    экспериментов)
+  kaggle_dataset: rabieelkharoua/predict-conversion-in-digital-marketing-dataset
+  path: /content/drive/MyDrive/digital_marketing_conversion/data/digital_marketing_campaign_dataset.csv
+  source: kaggle
